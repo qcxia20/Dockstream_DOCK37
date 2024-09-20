@@ -1,5 +1,5 @@
 from typing import List
-from dockstream.utils.translations.translation import RDkitMolToOpenEyeMol, OpenEyeMolToRDkitMol
+# from dockstream.utils.translations.translation import RDkitMolToOpenEyeMol, OpenEyeMolToRDkitMol
 from dockstream.utils.enums.ligand_preparation_enum import LigandPreparationEnum
 from dockstream.core.ligand.ligand import Ligand
 

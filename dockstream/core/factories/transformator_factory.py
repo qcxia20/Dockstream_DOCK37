@@ -1,6 +1,6 @@
 from dockstream.loggers.ligand_preparation_logger import LigandPreparationLogger
 from dockstream.utils.enums.logging_enums import LoggingConfigEnum
-from dockstream.core.OpenEye.OpenEye_transformator import OpenEyeTransformator
+# from dockstream.core.OpenEye.OpenEye_transformator import OpenEyeTransformator
 from dockstream.utils.enums.transformations_enums import TransformationEnum
 
 

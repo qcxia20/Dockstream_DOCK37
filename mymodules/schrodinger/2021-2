@@ -1,0 +1,5 @@
+#%Module 1.0
+
+# Define prefix so PATH and MANPATH can be updated.
+prepend-path  PATH          /pubhome/qcxia02/soft/schrodinger2021-2
+setenv        SCHRODINGER   /pubhome/qcxia02/soft/schrodinger2021-2

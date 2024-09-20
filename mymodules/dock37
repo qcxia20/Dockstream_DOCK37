@@ -1,0 +1,6 @@
+#%Module 1.0
+
+# Define prefix so PATH and MANPATH can be updated.
+setenv        UNICON_EXE         /pubhome/qcxia02/soft/ZBH2022/unicon_1.4.2/unicon
+setenv        DOCK37_SH          /pubhome/qcxia02/git-repo/DockStream/dockstream/core/Dock37/dock37.sh
+setenv        db2_converter_SH   /pubhome/qcxia02/git-repo/DockStream/dockstream/core/db2_converter/run_db2_converter.sh

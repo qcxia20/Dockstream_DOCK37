@@ -59,6 +59,7 @@ class LigandPreparationEnum:
     TYPE_LIGPREP = "Ligprep"
     TYPE_GOLD = "Gold"
     TYPE_OMEGA = "Omega"
+    TYPE_DB2 = "db2_converter"  ## xli
 
     # structural alignment to reference ("internal" method)
     # ---------

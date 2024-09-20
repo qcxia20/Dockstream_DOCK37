@@ -2,11 +2,12 @@ from dockstream.core.ligand.ligand_input_parser import LigandInputParser
 
 from dockstream.utils.dockstream_exceptions import *
 
+from dockstream.core.db2_converter.db2_converter import DB2_converter  ## xli
 from dockstream.core.RDkit.RDkit_ligand_preparator import RDkitLigandPreparator
-from dockstream.core.OpenEye.OpenEye_ligand_preparator import OpenEyeLigandPreparator
+# from dockstream.core.OpenEye.OpenEye_ligand_preparator import OpenEyeLigandPreparator
 from dockstream.core.Corina.Corina_ligand_preparator import CorinaLigandPreparator
 from dockstream.core.Schrodinger.Ligprep_ligand_preparator import LigprepLigandPreparator
-from dockstream.core.OpenEyeHybrid.Omega_ligand_preparator import OmegaLigandPreparator
+# from dockstream.core.OpenEyeHybrid.Omega_ligand_preparator import OmegaLigandPreparator
 
 from dockstream.utils.enums.docking_enum import DockingConfigurationEnum
 from dockstream.utils.enums.ligand_preparation_enum import LigandPreparationEnum
@@ -34,6 +35,8 @@ def embed_ligands(smiles, pool_number, pool, logger, ligand_number_start=0):
         prep = RDkitLigandPreparator(ligands=list_ligands, pool_number=pool_number, **pool)
     elif pool[_LP.TYPE] == _LP.TYPE_OPENEYE:
         prep = OpenEyeLigandPreparator(ligands=list_ligands, pool_number=pool_number, **pool)
+    elif pool[_LP.TYPE] == _LP.TYPE_DB2:  ## xli
+        prep = DB2_converter(ligands=list_ligands, pool_number=pool_number, **pool)
     elif pool[_LP.TYPE] == _LP.TYPE_CORINA:
         prep = CorinaLigandPreparator(ligands=list_ligands, pool_number=pool_number, **pool)
     elif pool[_LP.TYPE] == _LP.TYPE_LIGPREP:
