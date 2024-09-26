@@ -183,7 +183,8 @@ class Dock37(Docker, BaseModel):
     def _extract_score_from_Dock37Result(self, cur_identifier, tmp_docked_unique_scores) -> str:
         with open(tmp_docked_unique_scores, 'r') as score_f:
             score_lines = score_f.readlines()
-        result_line = [line for line in score_lines if cur_identifier in line][0]
+        # result_line = [line for line in score_lines if cur_identifier in line][0]
+        result_line = [line for line in score_lines if line and cur_identifier == line.split()[2]][0]
         parts = result_line.split()
         return parts[-1]
 

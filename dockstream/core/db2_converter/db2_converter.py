@@ -1,4 +1,5 @@
 import os
+import glob
 import tempfile
 from copy import deepcopy
 import multiprocessing
@@ -35,6 +36,7 @@ class DB2_converterParameters(BaseModel):
     rotateh: Optional[bool] = False
     keep_max_conf: Optional[bool] = False
     sampletp: Optional[bool] = False
+    mergeiso: Optional[bool] = False
 
 
 class DB2_converter(LigandPreparator, BaseModel):
@@ -89,7 +91,8 @@ class DB2_converter(LigandPreparator, BaseModel):
         failed = 0
         succeeded = 0
 
-        tmppath = f"/tmp/{os.environ.get('USERNAME')}/"
+        tmppath = f"/tmp/qcxia02/"
+        # print("tmppath", tmppath)
         if not os.path.exists(tmppath):
             os.mkdir(tmppath)
         tmp_dir = tempfile.mkdtemp(dir=tmppath)
@@ -104,10 +107,16 @@ class DB2_converter(LigandPreparator, BaseModel):
         Nsplit = Nsmis // Ncores + 1
         os.system(f"split -l {Nsplit} {all_smi_path} {tmp_dir}/split. --additional-suffix=.smi")
         # os.system
-        os.system(f"{self.parameters.prefix_execution}; cwd=`pwd`; cd {tmp_dir}; ls split.*.smi | parallel -I insmi -j {Ncores} -k 'timeout 300 bash $db2_converter_SH insmi {self.parameters.max_conf} {tmp_dir}/input {self.parameters.db2_method} {self.parameters.checkstereo} {self.parameters.useff} {self.parameters.sampletp} {self.parameters.reseth} {self.parameters.rotateh} {self.parameters.keep_max_conf}'; cd $cwd") # each 5 mins at most
+        db2_converter_command=f"parallel -j {Ncores} -k 'timeout 300 bash $db2_converter_SH {{}} {self.parameters.max_conf} {tmp_dir}/input {self.parameters.db2_method} {self.parameters.checkstereo} {self.parameters.useff} {self.parameters.sampletp} {self.parameters.reseth} {self.parameters.rotateh} {self.parameters.keep_max_conf} {self.parameters.mergeiso}'"
+        # print(db2_converter_command)
+        os.system(f"{self.parameters.prefix_execution}; cwd=`pwd`; cd {tmp_dir}; ls split.*.smi | {db2_converter_command}; cd $cwd") # each 5 mins at most
 
 
         for idx, lig_obj in enumerate(ligand_list):
+            if not os.path.exists(f'{tmp_dir}/input/{lig_obj.get_identifier()}.db2.gz'):
+                if glob.glob(f'{tmp_dir}/input/{lig_obj.get_identifier()}.*.db2.gz'):
+                    os.system(f"cat {tmp_dir}/input/{lig_obj.get_identifier()}.*.db2.gz > {tmp_dir}/input/{lig_obj.get_identifier()}.db2.gz")
+                    os.system(f"rm {tmp_dir}/input/{lig_obj.get_identifier()}.*.db2.gz")
             if not os.path.exists(f'{tmp_dir}/input/{lig_obj.get_identifier()}.db2.gz'):
                 self._logger.log(f"Could not embed molecule number {lig_obj.get_ligand_number()} (smile: {lig_obj.get_smile()}) - no 3D coordinates generated.",
                                     _LE.DEBUG)

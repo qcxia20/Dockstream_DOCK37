@@ -10,10 +10,11 @@ useff=$6
 sampletp=$7
 reseth=$8
 rotateh=$9
-keep_max_conf=$10
-mergeiso=$11
+keep_max_conf=${10}
+mergeiso=${11}
 
-source $CONDA_ROOT/etc/profile.d/conda.sh
+# source $CONDA_ROOT/etc/profile.d/conda.sh
+source /pubhome/qcxia02/mambaforge/etc/profile.d/conda.sh
 conda activate DockStreamCommunity
 
 if [ $sampletp == 'True' ]; then
@@ -52,6 +53,7 @@ if [ $mergeiso == 'True' ];
 then
     command+=" --mergeiso"
 fi
+# echo $command
 
 # echo $command
 $command &> db2_${method}_$(basename $insmi .smi).log
